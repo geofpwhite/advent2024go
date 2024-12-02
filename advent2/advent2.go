@@ -15,7 +15,6 @@ const (
 
 func main() {
 	reports := parse()
-	fmt.Println(reports)
 	sum := 0
 outer:
 	for _, report := range reports {
@@ -35,7 +34,6 @@ outer:
 			cur = num
 		}
 		sum++
-		fmt.Println(report)
 	}
 	fmt.Println(sum)
 	sum = 0
@@ -75,10 +73,8 @@ func checkValidByRemoving(report []int) bool {
 		newReport := make([]int, i)
 		copy(newReport, report[:i])
 		newReport = append(newReport, report[i+1:]...)
-		fmt.Println(newReport)
 		reportChecks[i] = newReport
 	}
-	fmt.Println(reportChecks)
 
 outer3:
 	for _, newReport := range reportChecks {
