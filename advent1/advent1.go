@@ -31,8 +31,8 @@ func main() {
 		secondNums = append(secondNums, second)
 	}
 
-	slices.Sort[[]int](firstNums)
-	slices.Sort[[]int](secondNums)
+	slices.Sort(firstNums)
+	slices.Sort(secondNums)
 	sum := 0
 
 	for i := range firstNums {
