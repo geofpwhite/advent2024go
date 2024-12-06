@@ -38,7 +38,6 @@ outer:
 	fmt.Println(sum)
 	sum = 0
 outer2:
-
 	for _, report := range reports {
 		rate := INCR
 		if report[0] > report[1] {

@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"slices"
 	"strconv"
 	"strings"
+	"text/scanner"
 )
 
 func main() {
