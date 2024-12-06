@@ -20,7 +20,7 @@ type guard struct {
 	x, y int
 }
 
-func main() {
+func advent() {
 
 	blockages, maxX, maxY, g := parse()
 	visited := make(map[[2]int]bool)
@@ -28,12 +28,9 @@ func main() {
 	steps := 0
 	sum := 0
 	for !g.moveOne(visited, maxX, maxY, blockages, &turns) {
-		fmt.Printf("Step %d\n", steps)
 		steps++
 	}
 	fmt.Println(len(visited))
-	fmt.Println(blockages)
-
 	for x := range maxX {
 		for y := range maxY {
 			blockages, maxX, maxY, g = parse()
@@ -43,7 +40,8 @@ func main() {
 			visited2 := make(map[guard]bool)
 			blockages[[2]int{x, y}] = true
 			// fmt.Println(x, y)
-			stop, cycle := g.moveOnePart2(visited2, maxX, maxY, blockages, &turns)
+			// stop, cycle := g.moveOnePart2(visited2, maxX, maxY, blockages, &turns)
+			stop, cycle := false, false
 			for !stop && !cycle {
 				stop, cycle = g.moveOnePart2(visited2, maxX, maxY, blockages, &turns)
 				if cycle {
@@ -119,7 +117,7 @@ func (g *guard) moveOnePart2(visited map[guard]bool, maxX, maxY int, blockages m
 		return true, false
 	}
 	if blockages[squareToCheck] {
-		// visited[*g] = true
+		visited[*g] = true
 		g.turnRight()
 
 		*turns = append(*turns, [2]int{g.x, g.y})
@@ -165,4 +163,7 @@ func parse() (map[[2]int]bool, int, int, *guard) {
 		}
 	}
 	return blockages, len(lines), len(lines[0]), g
+}
+func main() {
+	advent()
 }
