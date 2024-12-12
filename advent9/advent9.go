@@ -57,16 +57,11 @@ outer:
 				break
 			}
 			if fileRanges[fileIndex][1]-fileRanges[fileIndex][0] == spaceRange[1]-spaceRange[0] {
-				// freeSpaceRanges = append(freeSpaceRanges, [2]int{fileRanges[fileIndex][0], fileRanges[fileIndex][1]})
 				fileRanges[fileIndex][1], fileRanges[fileIndex][0] = spaceRange[1], spaceRange[0]
 				freeSpaceRanges = slices.Delete(freeSpaceRanges, i, i+1)
-
-				// fmt.Println(freeSpaceRanges)
-				// fmt.Println(freeSpaceRanges)
 				break
 			}
 			if fileRanges[fileIndex][1]-fileRanges[fileIndex][0] < spaceRange[1]-spaceRange[0] {
-				// freeSpaceRanges = append(freeSpaceRanges, [2]int{fileRanges[fileIndex][0], fileRanges[fileIndex][1]})
 				diff := fileRanges[fileIndex][1] - fileRanges[fileIndex][0]
 				fileRanges[fileIndex][1], fileRanges[fileIndex][0] = spaceRange[0]+diff, spaceRange[0]
 				freeSpaceRanges[i][0] += diff + 1
