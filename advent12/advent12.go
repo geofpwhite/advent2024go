@@ -25,11 +25,7 @@ func parse() ([]string, int, int) {
 }
 
 func main() {
-	alphabetToCoords := make(map[string]map[[2]int]bool)
 	lines, maxX, maxY := parse()
-	for _, char := range "ABCDEFGHIJKLMNOPQRSTUVWXYZ" {
-		alphabetToCoords[string(char)] = make(map[[2]int]bool)
-	}
 	visited := map[[2]int]bool{}
 
 	shapes := []map[[2]int]bool{}

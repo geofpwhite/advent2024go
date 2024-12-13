@@ -21,12 +21,14 @@ func parse() []int {
 	}
 	return ret
 }
-
 func main() {
+	Main()
+}
+
+func Main() {
 	stones := parse()
-	for i := range 25 {
+	for range 25 {
 		// fmt.Println(stones)
-		fmt.Println(i)
 		stones = blink(stones)
 		// fmt.Println(stones)
 	}
