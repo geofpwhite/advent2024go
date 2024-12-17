@@ -25,13 +25,15 @@ type computer2 struct {
 }
 
 func find(input int, comp computer, index int, values []int) []int {
+	hold := comp
 	for i := range 2 {
 		for j := range 2 {
 			for k := range 2 {
-				newInp := input + ((i << (3 * (index))) + (j << ((3 * (index)) - 1)) + (k << ((3 * (index)) - 2)))
+				comp = hold
+				newInp := (input << 3) + (i << 2) + (j << (1)) + (k)
+				// fmt.Println(leng)
 				comp.a = newInp
 				leng := len(comp.output)
-				// fmt.Println(leng)
 				fmt.Println(comp.output)
 				fmt.Println(newInp)
 				for leng == len(comp.output) && comp.instrPointer < len(comp.commands) {
@@ -203,8 +205,8 @@ func (comp *computer) advance() {
 }
 
 func parse() computer {
-	// file, _ := os.Open("input.txt")
-	file, _ := os.Open("test.txt")
+	file, _ := os.Open("input.txt")
+	// file, _ := os.Open("test.txt")
 	scanner := bufio.NewScanner(file)
 	var (
 		a, b, c      int
