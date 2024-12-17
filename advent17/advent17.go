@@ -51,29 +51,29 @@ func main() {
 		fmt.Println(K, "k")
 		possibles = append(possibles, make([]int, 0))
 		for _, num := range possibles[possibleIndex] {
-
 			for mul := range 8 {
 
 				for i := range 2 {
 					for j := range 2 {
 						for k := range 2 {
 							// comp = og
-							comp.a = num + (mul * ((i << (3 * (index))) + (j << ((3 * (index)) - 1)) + (k << ((3 * (index)) - 2))))
+							comp = og
+							comp.a = (mul * ((i << (3 * (index))) + (j << ((3 * (index)) - 1)) + (k << ((3 * (index)) - 2))))
 							// fmt.Println((i << (3 * index)) + (j << (3*(index) - 1)) + (k << ((3 * index) - 2)))
 							// fmt.Println(comp.a)
 							// fmt.Println("---")
-							for comp.instrPointer < len(comp.commands) {
+							for len(comp.output) == 0 && comp.instrPointer < len(comp.commands) {
 								comp.advance()
-								if len(comp.output) == index+1 {
-									break
-								}
+								// if len(comp.output) > 0 {
+								// 	break
+								// }
 							}
-							if len(comp.output) != len(correct) {
-								continue
-							}
+							// if len(comp.output) < index || len(comp.output) > len(correct) {
+							// 	continue
+							// }
 							// if comp.output[index] = correct[index]{}
-							// fmt.Println(comp.output[index:], correct[index:])
-							if comp.output[index] == correct[index] {
+							fmt.Println(comp.output, correct[index])
+							if comp.output[0] == correct[index] {
 								possibles[len(possibles)-1] = append(possibles[len(possibles)-1], num+(mul*((i<<(3*index))+(j<<((3*index)-1))+(k<<((3*index)-2)))))
 							}
 							if slices.Equal(comp.output, correct) {
