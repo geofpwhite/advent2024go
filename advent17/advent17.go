@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -25,9 +24,42 @@ type computer2 struct {
 	output       []string
 }
 
+func find(input int, comp computer, index int, values []int) []int {
+	for i := range 2 {
+		for j := range 2 {
+			for k := range 2 {
+				newInp := input + ((i << (3 * (index))) + (j << ((3 * (index)) - 1)) + (k << ((3 * (index)) - 2)))
+				comp.a = newInp
+				leng := len(comp.output)
+				// fmt.Println(leng)
+				fmt.Println(comp.output)
+				fmt.Println(newInp)
+				for leng == len(comp.output) && comp.instrPointer < len(comp.commands) {
+					comp.advance()
+				}
+				if index == 0 {
+					if comp.output[0] == comp.commands[0] {
+						values = append(values, newInp)
+					}
+				} else if comp.commands[index] == comp.output[len(comp.output)-1] {
+					values = find(newInp, comp, index-1, values)
+				}
+			}
+		}
+	}
+	return values
+}
+
+// if (ind == 0) {
+//                   if (Integer.parseInt(run(t, prog)) == prog[0]) {
+//                       val.add(t);
+//                   }
+//               } else if (Integer.parseInt(run(t, prog)) == prog[ind]) {
+//                   val = find(s, prog, ind - 1, val);
+//               }
+
 func main() {
 	comp := parse()
-	og := parse()
 	fmt.Println(comp)
 	// comp.a = 70000000
 	for comp.instrPointer < len(comp.commands) {
@@ -40,83 +72,73 @@ func main() {
 		str += strconv.Itoa(num) + ","
 	}
 	fmt.Println(strings.Trim(str, ","))
-	correct := comp.commands
+	// correct := comp.commands
+	//
+	// possibles := [][]int{{1 << (3 * (len(comp.commands) - 1))}}
+	// // possibles := [][]int{{0}}
+	// possibleIndex := 0
+	// index := len(comp.commands) - 1
+	// for index != 0 {
+	// 	K := 1 << (3 * index)
+	// 	fmt.Println(K, "k")
+	// 	possibles = append(possibles, make([]int, 0))
+	// 	for _, num := range possibles[possibleIndex] {
+	// 		for mul := range 8 {
+	//
+	// 			for i := range 2 {
+	// 				for j := range 2 {
+	// 					for k := range 2 {
+	// 						// comp = og
+	// 						comp = og
+	// 						comp.a = (mul * ((i << (3 * (index))) + (j << ((3 * (index)) - 1)) + (k << ((3 * (index)) - 2))))
+	// 						// fmt.Println((i << (3 * index)) + (j << (3*(index) - 1)) + (k << ((3 * index) - 2)))
+	// 						// fmt.Println(comp.a)
+	// 						// fmt.Println("---")
+	// 						for len(comp.output) == 0 && comp.instrPointer < len(comp.commands) {
+	// 							comp.advance()
+	// 							// if len(comp.output) > 0 {
+	// 							// 	break
+	// 							// }
+	// 						}
+	// 						// if len(comp.output) < index || len(comp.output) > len(correct) {
+	// 						// 	continue
+	// 						// }
+	// 						// if comp.output[index] = correct[index]{}
+	// 						fmt.Println(comp.output, correct[index])
+	// 						if comp.output[0] == correct[index] {
+	// 							possibles[len(possibles)-1] = append(possibles[len(possibles)-1], num+(mul*((i<<(3*index))+(j<<((3*index)-1))+(k<<((3*index)-2)))))
+	// 						}
+	// 						if slices.Equal(comp.output, correct) {
+	// 							// fmt.Println()
+	// 							// fmt.Println()
+	// 							fmt.Println(num + (mul * ((i << (3 * index)) + (j << (3*(index) - 1)) + (k << ((3 * index) - 2)))))
+	// 							panic("")
+	// 						}
+	//
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 		// for i := range 8 {
+	// 		// 	comp = parse()
+	// 		// 	comp.a = num + (K * (i))
+	// 		// 	for comp.instrPointer < len(comp.commands) {
+	// 		// 		comp.advance()
+	// 		// 	}
+	// 		// 	fmt.Println(K, num+(K*i), comp.output)
+	// 		// 	fmt.Println(num)
+	// 		// 	// fmt.Println(comp.output[index], correct[index])
+	// 		// 	if comp.output[index] == correct[index] {
+	// 		// 		possibles[len(possibles)-1] = append(possibles[len(possibles)-1], num+(K*(i)))
+	// 		// 	}
+	// 		// }
+	// 	}
+	// 	index--
+	// 	possibleIndex++
+	// }
 
-	possibles := [][]int{{1 << (3 * (len(comp.commands) - 1))}}
-	// possibles := [][]int{{0}}
-	possibleIndex := 0
-	index := len(comp.commands) - 1
-	for index != 0 {
-		K := 1 << (3 * index)
-		fmt.Println(K, "k")
-		possibles = append(possibles, make([]int, 0))
-		for _, num := range possibles[possibleIndex] {
-			for mul := range 8 {
-
-				for i := range 2 {
-					for j := range 2 {
-						for k := range 2 {
-							// comp = og
-							comp = og
-							comp.a = (mul * ((i << (3 * (index))) + (j << ((3 * (index)) - 1)) + (k << ((3 * (index)) - 2))))
-							// fmt.Println((i << (3 * index)) + (j << (3*(index) - 1)) + (k << ((3 * index) - 2)))
-							// fmt.Println(comp.a)
-							// fmt.Println("---")
-							for len(comp.output) == 0 && comp.instrPointer < len(comp.commands) {
-								comp.advance()
-								// if len(comp.output) > 0 {
-								// 	break
-								// }
-							}
-							// if len(comp.output) < index || len(comp.output) > len(correct) {
-							// 	continue
-							// }
-							// if comp.output[index] = correct[index]{}
-							fmt.Println(comp.output, correct[index])
-							if comp.output[0] == correct[index] {
-								possibles[len(possibles)-1] = append(possibles[len(possibles)-1], num+(mul*((i<<(3*index))+(j<<((3*index)-1))+(k<<((3*index)-2)))))
-							}
-							if slices.Equal(comp.output, correct) {
-								// fmt.Println()
-								// fmt.Println()
-								fmt.Println(num + (mul * ((i << (3 * index)) + (j << (3*(index) - 1)) + (k << ((3 * index) - 2)))))
-								panic("")
-							}
-
-						}
-					}
-				}
-			}
-			// for i := range 8 {
-			// 	comp = parse()
-			// 	comp.a = num + (K * (i))
-			// 	for comp.instrPointer < len(comp.commands) {
-			// 		comp.advance()
-			// 	}
-			// 	fmt.Println(K, num+(K*i), comp.output)
-			// 	fmt.Println(num)
-			// 	// fmt.Println(comp.output[index], correct[index])
-			// 	if comp.output[index] == correct[index] {
-			// 		possibles[len(possibles)-1] = append(possibles[len(possibles)-1], num+(K*(i)))
-			// 	}
-			// }
-		}
-		index--
-		possibleIndex++
-	}
-	fmt.Println(possibles)
-	for _, ary := range possibles {
-		for _, num := range ary {
-			comp = parse()
-			// comp.a = 42949672975
-			comp.a = num
-			for comp.instrPointer < len(comp.commands) {
-				comp.advance()
-			}
-			fmt.Println(comp.output)
-		}
-	}
-	fmt.Println(comp.output, correct)
+	comp = parse()
+	fmt.Println(find(0, comp, len(comp.commands)-1, []int{}))
 }
 
 func (comp *computer) comboOperand(num int) int {
