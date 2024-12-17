@@ -129,7 +129,8 @@ func main() {
 		for cdir, c := range connectedNodes {
 			// fmt.Println(visited[visitedNode{node: field.corners[c], dir: (dir)}], visited[visitedNode{node: cur, dir: dir}]-connectedLs[dir]-1)
 			offset := 1000
-			if cdir == dir {
+
+			if cdir == dir || (cdir == '<' && dir == '>') || (cdir == '>' && dir == '<') || (cdir == 'v' && dir == '^') || (cdir == '^' && dir == 'v') {
 				offset = 0
 			}
 			// offset := 0
@@ -293,8 +294,8 @@ func parse() (field, coords, coords) {
 	f := field{
 		make(map[coords]*node),
 	}
-	file, _ := os.Open("input.txt")
-	// file, _ := os.Open("test.txt")
+	// file, _ := os.Open("input.txt")
+	file, _ := os.Open("test.txt")
 	scanner := bufio.NewScanner(file)
 	lines := []string{}
 	for scanner.Scan() {
