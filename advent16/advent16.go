@@ -58,9 +58,9 @@ func main() {
 		// 	continue
 		// }
 		// if cur.node.coords == end && cur.score == 7036 {
-		if cur.node.coords == end && cur.score == 130536 {
-			continue
-		}
+		// if cur.node.coords == end {
+		// 	continue
+		// }
 		if len(stack) > larg {
 			larg = len(stack)
 			fmt.Println(cur.score)
@@ -96,10 +96,14 @@ func main() {
 	fmt.Println(visited[visitedNode{field.corners[end], 'v'}])
 
 	queue := []coords{end}
+	dirq := []rune{'>'}
 	points := map[coords]bool{}
 	for len(queue) > 0 {
 		cur := field.corners[queue[0]]
+		dir := dirq[0]
 		queue = queue[1:]
+		dirq = dirq[1:]
+
 		connectedNodes := map[rune]coords{}
 		connectedLs := map[rune]int{}
 		if cur.coords == end {
@@ -122,12 +126,17 @@ func main() {
 			connectedLs['>'] = cur.w.distance
 		}
 		fmt.Println(cur, connectedLs)
-		for dir, c := range connectedNodes {
+		for cdir, c := range connectedNodes {
 			// fmt.Println(visited[visitedNode{node: field.corners[c], dir: (dir)}], visited[visitedNode{node: cur, dir: dir}]-connectedLs[dir]-1)
-
-			if visited[visitedNode{node: field.corners[c], dir: (dir)}] == visited[visitedNode{node: cur, dir: dir}]-connectedLs[dir]-1 {
+			offset := 1000
+			if cdir == dir {
+				offset = 0
+			}
+			// offset := 0
+			if visited[visitedNode{node: field.corners[c], dir: (cdir)}] == visited[visitedNode{node: cur, dir: dir}]-connectedLs[cdir]-1-offset {
 				points[c] = true
 				queue = append(queue, c)
+				dirq = append(dirq, cdir)
 			}
 		}
 	}
