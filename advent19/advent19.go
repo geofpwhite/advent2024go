@@ -99,14 +99,3 @@ func valid2(design string, towels []string, value int, dp map[string]int) int {
 	dp[design] = value
 	return value
 }
-
-//	func generateDesigns(towels []string, design string) int {
-//		num := 0
-//		for _, towel := range towels {
-//
-//			if towel == design[:len(towel)] {
-//				num += generateDesigns(towels, design[:len(towel)])
-//			}
-//		}
-//		return num
-//	}

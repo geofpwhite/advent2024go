@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -26,28 +27,23 @@ type computer2 struct {
 
 func find(input int, comp computer, index int, values []int) []int {
 	hold := comp
-	for i := range 2 {
-		for j := range 2 {
-			for k := range 2 {
-				comp = hold
-				newInp := (input << 3) + (i << 2) + (j << (1)) + (k)
-				// fmt.Println(leng)
-				comp.a = newInp
-				leng := len(comp.output)
-				fmt.Println(comp.output)
-				fmt.Println(newInp)
-				for leng == len(comp.output) && comp.instrPointer < len(comp.commands) {
-					comp.advance()
-				}
-				if index == 0 {
-					if comp.output[0] == comp.commands[0] {
-						values = append(values, newInp)
-					}
-				} else if comp.commands[index] == comp.output[len(comp.output)-1] {
-					values = find(newInp, comp, index-1, values)
-				}
-			}
+	for i := range 8 {
+		comp = hold
+		newInp := (input << 3) + i
+		// fmt.Println(leng)
+		comp.a = newInp
+		leng := len(comp.output)
+		for leng == len(comp.output) && comp.instrPointer < len(comp.commands) {
+			comp.advance()
 		}
+		if index == 0 {
+			if comp.output[len(comp.output)-1] == comp.commands[0] {
+				values = append(values, newInp)
+			}
+		} else if comp.commands[index] == comp.output[len(comp.output)-1] {
+			values = find(newInp, comp, index-1, values)
+		}
+
 	}
 	return values
 }
@@ -140,7 +136,10 @@ func main() {
 	// }
 
 	comp = parse()
-	fmt.Println(find(0, comp, len(comp.commands)-1, []int{}))
+
+	x := (find(0, comp, len(comp.commands)-1, []int{}))
+	slices.Sort(x)
+	fmt.Println(x)
 }
 
 func (comp *computer) comboOperand(num int) int {

@@ -58,7 +58,7 @@ func main() {
 		// 	continue
 		// }
 		// if cur.node.coords == end && cur.score == 7036 {
-		// if cur.node.coords == end {
+		// if cur.node.coords == end && cur.score == 11048 {
 		// 	continue
 		// }
 		if len(stack) > larg {
@@ -134,7 +134,7 @@ func main() {
 				offset = 0
 			}
 			// offset := 0
-			if visited[visitedNode{node: field.corners[c], dir: (cdir)}] == visited[visitedNode{node: cur, dir: dir}]-connectedLs[cdir]-1-offset {
+			if visited[visitedNode{node: field.corners[c], dir: (cdir)}] == visited[visitedNode{node: cur, dir: dir}]-connectedLs[cdir]-1-offset || visited[visitedNode{node: field.corners[c], dir: (cdir)}] == visited[visitedNode{node: cur, dir: dir}]-connectedLs[cdir]-offset {
 				points[c] = true
 				queue = append(queue, c)
 				dirq = append(dirq, cdir)
@@ -182,7 +182,7 @@ func main() {
 			dy = 1
 		}
 		pointToAdd := edge[0]
-		if (dx != 0 && dy != 0) || !field.determineNeighbors(edge[0], edge[1]) {
+		if !field.determineNeighbors(edge[0], edge[1]) {
 			continue
 		}
 		if dx != 0 {
@@ -294,8 +294,9 @@ func parse() (field, coords, coords) {
 	f := field{
 		make(map[coords]*node),
 	}
-	// file, _ := os.Open("input.txt")
-	file, _ := os.Open("test.txt")
+	file, _ := os.Open("input.txt")
+	// file, _ := os.Open("test.txt")
+	// file, _ := os.Open("test2.txt")
 	scanner := bufio.NewScanner(file)
 	lines := []string{}
 	for scanner.Scan() {
